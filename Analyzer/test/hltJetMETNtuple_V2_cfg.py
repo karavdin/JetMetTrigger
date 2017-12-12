@@ -55,7 +55,6 @@ process.source = cms.Source("PoolSource",
                                 )
 )
 
-from validation.Analyzer.hltJetMETNtuple_cfi import *
 configureJetMetNtuple(process)
 process.ntuple = cms.Path(process.JetMetNtupleSequence)
 

@@ -16,7 +16,8 @@ def configureJetMetNtuple(process):
   
   options = VarParsing('analysis')
   options.register('applyMETFilters',True,VarParsing.multiplicity.singleton,VarParsing.varType.bool,'Apply MET filters')
-  
+  options.register('runJets',False,VarParsing.multiplicity.singleton,VarParsing.varType.bool,'Store Jet Variables')
+
   process.load('RecoMET.METFilters.BadChargedCandidateFilter_cfi')
   process.BadChargedCandidateFilter.muons = cms.InputTag("slimmedMuons")
   process.BadChargedCandidateFilter.PFCandidates = cms.InputTag("packedPFCandidates")
@@ -56,6 +57,7 @@ def configureJetMetNtuple(process):
 
 
     process.hltJetMetNtuple = cms.EDAnalyzer('HLTJetMETNtupleProducer',
+                                             runJets = cms.bool(options.runJets),
                                              PVCollectionTag = cms.InputTag("offlineSlimmedPrimaryVertices"),
                                              MetCollectionTag = cms.InputTag('slimmedMETs'),
                                              applyMETFilters = cms.bool(options.applyMETFilters),
@@ -102,6 +104,9 @@ def configureJetMetNtuple(process):
                                                                                   'HLT_Ele30_eta2p1_WPTight_Gsf_v',
                                                                                   'HLT_Ele32_WPTight_Gsf_v',
                                                                                   'HLT_Ele32_eta2p1_WPTight_Gsf_v',
+                                                                                  'HLT_IsoMu24_eta2p1_v',
+                                                                                  'HLT_IsoMu24_v',
+                                                                                  'HLT_IsoMu27_v',
                                                                                   'HLT_PFJet40_v',
                                                                                   'HLT_PFJet60_v',
                                                                                   'HLT_PFJet80_v',

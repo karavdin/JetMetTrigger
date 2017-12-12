@@ -117,10 +117,12 @@ class HLTJetMETNtupleProducer : public edm::EDAnalyzer {
   edm::EDGetTokenT<edm::ValueMap<bool> > eleSummer16LooseIdMapToken_;
   edm::EDGetTokenT<edm::ValueMap<bool> > eleSummer16MediumIdMapToken_;
   edm::EDGetTokenT<edm::ValueMap<bool> > eleSummer16TightIdMapToken_;
-  
+
+  bool runJets_;
+
   TTree* tree_;
   unsigned long run_,event_,lumi_;
-  float metPt_, metPhi_;
+  float metPx_, metPy_, metPt_, metPhi_;
   bool passMETFilter_;
   std::vector<std::string> triggerResults_;
   UInt_t  nPV_;
