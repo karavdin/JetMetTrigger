@@ -92,6 +92,7 @@ class HLTJetMETNtupleProducer : public edm::EDAnalyzer {
   edm::EDGetTokenT<reco::PFJetCollection> HLTPFJetCollectionToken_;
   edm::EDGetTokenT<reco::CaloJetCollection> HLTCaloJetCollectionToken_;
   edm::EDGetTokenT<edm::TriggerResults> hlt_;
+  edm::EDGetTokenT<pat::TriggerObjectStandAloneCollection> triggerObjects_;
   std::vector<std::string> triggerPaths_;
   //// e-ID decisions objects
   edm::EDGetTokenT<edm::ValueMap<bool> > eleVetoIdMapToken_;
@@ -129,6 +130,10 @@ class HLTJetMETNtupleProducer : public edm::EDAnalyzer {
   Float_t PVx_;
   Float_t PVy_;
   Float_t PVz_;
+
+  UInt_t passedHLTCaloMETClean_;
+  UInt_t passedHLTCaloMET_;
+  UInt_t passedL1MET_;
 
   //pat jets
   std::vector<float> pfjetPt_;

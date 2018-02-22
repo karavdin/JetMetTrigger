@@ -53,14 +53,14 @@ process.source = cms.Source("PoolSource",
 	#'/store/mc/RunIISummer17MiniAOD/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/MINIAODSIM/92X_upgrade2017_realistic_v7-v1/110000/80A744DB-3F76-E711-85C5-0CC47A6C1054.root',
 	#'/store/mc/RunIISummer17MiniAOD/TT_TuneCUETP8M2T4_13TeV-powheg-pythia8/MINIAODSIM/92X_upgrade2017_realistic_v7-v1/110000/DAF0BB7C-9D75-E711-9D64-0025905A48D0.root',
 
-	'/store/data/Run2017C/SingleElectron/MINIAOD/PromptReco-v1/000/299/594/00000/180ED238-3371-E711-AA34-02163E01A413.root',
-	'/store/data/Run2017C/SingleElectron/MINIAOD/PromptReco-v1/000/299/594/00000/64FCD9F0-2471-E711-89D1-02163E019C9F.root',
-	'/store/data/Run2017C/SingleElectron/MINIAOD/PromptReco-v1/000/299/594/00000/7C064643-3A71-E711-A956-02163E0119C5.root',
-	'/store/data/Run2017C/SingleElectron/MINIAOD/PromptReco-v1/000/299/594/00000/90370974-2971-E711-94F0-02163E011E64.root',
-	'/store/data/Run2017C/SingleElectron/MINIAOD/PromptReco-v1/000/299/594/00000/B2EB96A9-2B71-E711-AD25-02163E019DC2.root',
-	'/store/data/Run2017C/SingleElectron/MINIAOD/PromptReco-v1/000/299/594/00000/C0CE5CF7-2671-E711-A65F-02163E014218.root',
-	'/store/data/Run2017C/SingleElectron/MINIAOD/PromptReco-v1/000/299/594/00000/C81001BD-2C71-E711-BFAA-02163E01418D.root',
-	'/store/data/Run2017C/SingleElectron/MINIAOD/PromptReco-v1/000/299/594/00000/E03B5A6E-2F71-E711-B4D5-02163E01A4AD.root',
+	#'/store/data/Run2017C/SingleElectron/MINIAOD/PromptReco-v1/000/299/594/00000/180ED238-3371-E711-AA34-02163E01A413.root',
+	#'/store/data/Run2017C/SingleElectron/MINIAOD/PromptReco-v1/000/299/594/00000/64FCD9F0-2471-E711-89D1-02163E019C9F.root',
+	#'/store/data/Run2017C/SingleElectron/MINIAOD/PromptReco-v1/000/299/594/00000/7C064643-3A71-E711-A956-02163E0119C5.root',
+	#'/store/data/Run2017C/SingleElectron/MINIAOD/PromptReco-v1/000/299/594/00000/90370974-2971-E711-94F0-02163E011E64.root',
+	#'/store/data/Run2017C/SingleElectron/MINIAOD/PromptReco-v1/000/299/594/00000/B2EB96A9-2B71-E711-AD25-02163E019DC2.root',
+	#'/store/data/Run2017C/SingleElectron/MINIAOD/PromptReco-v1/000/299/594/00000/C0CE5CF7-2671-E711-A65F-02163E014218.root',
+	#'/store/data/Run2017C/SingleElectron/MINIAOD/PromptReco-v1/000/299/594/00000/C81001BD-2C71-E711-BFAA-02163E01418D.root',
+	#'/store/data/Run2017C/SingleElectron/MINIAOD/PromptReco-v1/000/299/594/00000/E03B5A6E-2F71-E711-B4D5-02163E01A4AD.root',
  
 	#'/store/data/Run2017B/SingleElectron/MINIAOD/PromptReco-v2/000/299/329/00000/183EA4EB-3B6D-E711-81F3-02163E0135E4.root',
 	#'/store/data/Run2017B/SingleElectron/MINIAOD/PromptReco-v2/000/299/329/00000/249027CF-3F6D-E711-8781-02163E014115.root',
@@ -72,6 +72,9 @@ process.source = cms.Source("PoolSource",
 	#'/store/data/Run2017B/SingleElectron/MINIAOD/PromptReco-v2/000/299/329/00000/C2951904-486D-E711-B0BD-02163E01A35F.root',
 	
 
+    #'/store/data/Run2017D/SingleElectron/MINIAOD/PromptReco-v1/000/302/031/00000/105643A1-328F-E711-943D-02163E014641.root',
+    #'/store/data/Run2017D/SingleElectron/MINIAOD/PromptReco-v1/000/302/031/00000/1AE1B9B1-2F8F-E711-A3F6-02163E01441F.root',
+    '/store/data/Run2017D/SingleElectron/MINIAOD/PromptReco-v1/000/302/031/00000/247DE91B-318F-E711-BC5C-02163E012AFE.root'
  
     
                                 )
@@ -112,6 +115,7 @@ for idmod in my_id_modules:
 
 
 process.hltJetMetNtuple = cms.EDAnalyzer('HLTJetMETNtupleProducer',
+                                         runJets = cms.bool(False),
                                          PVCollectionTag = cms.InputTag("offlineSlimmedPrimaryVertices"),
                                          MetCollectionTag = cms.InputTag('slimmedMETs'),
 					 applyMETFilters = cms.bool(options.applyMETFilters),
@@ -143,6 +147,7 @@ process.hltJetMetNtuple = cms.EDAnalyzer('HLTJetMETNtupleProducer',
                                          eleSummer16MediumIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-medium"),
                                          eleSummer16TightIdMap = cms.InputTag("egmGsfElectronIDs:cutBasedElectronID-Summer16-80X-V1-tight"),
 					 hltprocess = cms.InputTag('TriggerResults::HLT'),
+                                         triggerObjects = cms.InputTag("slimmedPatTrigger"),
                                          triggerPaths = cms.untracked.vstring('HLT_PFMET200_NotCleaned_v',					 
                                                                               'HLT_PFMET200_HBHECleaned_v',
 									      'HLT_PFMET250_HBHECleaned_v',

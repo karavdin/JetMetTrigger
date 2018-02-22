@@ -51,6 +51,7 @@ HLTJetMETNtupleProducer::HLTJetMETNtupleProducer(const edm::ParameterSet& iConfi
   triggerPaths_ = iConfig.getUntrackedParameter<std::vector<std::string> >("triggerPaths");
   //triggerBits_          = consumes<edm::TriggerResults>(edm::InputTag(std::string("TriggerResults"),std::string(""),std::string("HLT")));
   triggerBitsPAT_       = consumes<edm::TriggerResults>(edm::InputTag(std::string("TriggerResults"),std::string(""),std::string("PAT")));
+  triggerObjects_       = consumes<pat::TriggerObjectStandAloneCollection>(iConfig.getParameter<edm::InputTag>( "triggerObjects" ));
 }
 
 
@@ -120,6 +121,22 @@ HLTJetMETNtupleProducer::analyze(const edm::Event& iEvent, const edm::EventSetup
         }
       }
     }
+
+  edm::Handle<pat::TriggerObjectStandAloneCollection> triggerObjects;
+  iEvent.getByToken(triggerObjects_, triggerObjects);
+  passedL1MET_ = 0;
+  passedHLTCaloMET_ = 0;
+  passedHLTCaloMETClean_ = 0;
+  for (pat::TriggerObjectStandAlone obj : *triggerObjects) {
+    obj.unpackPathNames(TrigNames_);
+    obj.unpackFilterLabels(iEvent, *hltresults);
+    for (unsigned h = 0; h < obj.filterLabels().size(); ++h) {
+      //if (obj.hasFilterLabel("hltL1sETM50IorETM60IorETM70IorETM80IorETM90IorETM100") || obj.hasFilterLabel("hltL1sETM50ToETM120")) passedL1MET_ = 1;
+      if (obj.hasFilterLabel("hltL1sAllETMHadSeeds") || obj.hasFilterLabel("hltL1sETM50ToETM120")) passedL1MET_ = 1;
+      if (obj.hasFilterLabel("hltMET90")) passedHLTCaloMET_ = 1;
+      if (obj.hasFilterLabel("hltMETClean80")) passedHLTCaloMETClean_ = 1;
+    }             
+  }
 
   if(runJets_){
     //Get offline Reco/PAT Jets
@@ -509,7 +526,9 @@ HLTJetMETNtupleProducer::beginJob()
   tree_->Branch("elec_nmissinginnerhits", "std::vector<unsigned int>", &elec_nmissinginnerhits_);
   tree_->Branch("elec_pass_conversion", "std::vector<bool>", &elec_pass_conversion_);
   tree_->Branch("triggerResults", "std::vector<std::string>", &triggerResults_);
-  
+  tree_->Branch("passedL1MET", &passedL1MET_,"passedL1MET/i"); 
+  tree_->Branch("passedHLTCaloMET", &passedHLTCaloMET_, "passedHLTCaloMET/i");
+  tree_->Branch("passedHLTCaloMETClean", &passedHLTCaloMETClean_, "passedHLTCaloMETClean/i");
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
