@@ -123,7 +123,7 @@ class HLTJetMETNtupleProducer : public edm::EDAnalyzer {
 
   TTree* tree_;
   unsigned long run_,event_,lumi_;
-  float metPx_, metPy_, metPt_, metPhi_;
+  float metPx_, metPy_, metPt_, metPhi_, caloMetPt_, caloMetPhi_;
   bool passMETFilter_;
   std::vector<std::string> triggerResults_;
   UInt_t  nPV_;

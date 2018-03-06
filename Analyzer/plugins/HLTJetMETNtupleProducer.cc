@@ -255,11 +255,14 @@ HLTJetMETNtupleProducer::analyze(const edm::Event& iEvent, const edm::EventSetup
   
   metPt_ = 0.; metPhi_ = -999.;
   metPx_ = 0.; metPy_ = 0.;
+  caloMetPt_ = 0.; caloMetPhi_ = -999.;
   if(METs.isValid() && METs->size() > 0){
     metPt_ = (*METs)[0].pt();
     metPhi_ = (*METs)[0].phi();
     metPx_ = (*METs)[0].px();
     metPy_ = (*METs)[0].py();
+    caloMetPt_ = (*METs)[0].caloMETPt();
+    caloMetPhi_ = (*METs)[0].caloMETPhi();
   }
   
   muonPx_.clear(); muonPy_.clear(); muonPz_.clear(); 
@@ -393,7 +396,7 @@ HLTJetMETNtupleProducer::analyze(const edm::Event& iEvent, const edm::EventSetup
 	elecR03SumPhotonEt_.push_back(el->pfIsolationVariables().sumPhotonEt);
 	elecR03SumPUPt_.push_back(el->pfIsolationVariables().sumPUPt);
 	reco::GsfTrackRef gsfTr_e = el->gsfTrack();
-	elec_nmissinginnerhits_.push_back(gsfTr_e->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS));
+	//elec_nmissinginnerhits_.push_back(gsfTr_e->hitPattern().numberOfHits(reco::HitPattern::MISSING_INNER_HITS));
 	elec_pass_conversion_.push_back((*Electrons)[i].passConversionVeto());
 	elecDxy_.push_back(gsfTr_e->dxy(pv_position));
 	elecDz_.push_back(gsfTr_e->dz(pv_position));
@@ -467,6 +470,8 @@ HLTJetMETNtupleProducer::beginJob()
   tree_->Branch("metPy", &metPy_, "metPy/F");
   tree_->Branch("metPt", &metPt_, "metPt/F");
   tree_->Branch("metPhi", &metPhi_, "metPhi/F");
+  tree_->Branch("caloMetPt", &caloMetPt_, "caloMetPt/F");
+  tree_->Branch("caloMetPhi", &caloMetPhi_, "caloMetPhi/F");
   tree_->Branch("passMETFilter", &passMETFilter_, "passMETFilter/O");
   
   tree_->Branch("muonPx", "std::vector<float>", &muonPx_);
