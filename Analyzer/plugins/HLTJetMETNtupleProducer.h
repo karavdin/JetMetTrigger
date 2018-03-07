@@ -56,6 +56,9 @@
 #include "DataFormats/JetReco/interface/GenJetCollection.h"
 #include "DataFormats/Math/interface/deltaR.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
+#include "DataFormats/METReco/interface/GenMET.h"
+#include "DataFormats/METReco/interface/GenMETCollection.h"
+#include "DataFormats/JetReco/interface/GenJet.h"
 #include <iostream>
 #include <vector>
 #include "TTree.h"
@@ -84,11 +87,13 @@ class HLTJetMETNtupleProducer : public edm::EDAnalyzer {
       // ----------member data ---------------------------
   //edm::InputTag hlt_;
   edm::EDGetTokenT<pat::METCollection> MetCollectionToken_;
+  edm::EDGetTokenT<reco::GenMETCollection> GenMetCollectionToken_;
   edm::EDGetTokenT<pat::MuonCollection> MuonCollectionToken_;
   edm::EDGetTokenT<edm::View<pat::Electron> > ElectronCollectionToken_;
   edm::EDGetTokenT<reco::VertexCollection> PVToken_;
   edm::EDGetTokenT<pat::JetCollection> PFJetCollectionToken_;
-  //edm::EDGetTokenT<pat::JetCollection> CaloJetCollectionToken_;
+  edm::EDGetTokenT<reco::CaloJetCollection> CaloJetCollectionToken_;
+  edm::EDGetTokenT<reco::GenJetCollection> GenJetCollectionToken_;
   edm::EDGetTokenT<reco::PFJetCollection> HLTPFJetCollectionToken_;
   edm::EDGetTokenT<reco::CaloJetCollection> HLTCaloJetCollectionToken_;
   edm::EDGetTokenT<edm::TriggerResults> hlt_;
@@ -119,11 +124,12 @@ class HLTJetMETNtupleProducer : public edm::EDAnalyzer {
   edm::EDGetTokenT<edm::ValueMap<bool> > eleSummer16MediumIdMapToken_;
   edm::EDGetTokenT<edm::ValueMap<bool> > eleSummer16TightIdMapToken_;
 
-  bool runJets_;
+  bool runJets_, isData_;
 
   TTree* tree_;
   unsigned long run_,event_,lumi_;
   float metPx_, metPy_, metPt_, metPhi_, caloMetPt_, caloMetPhi_;
+  float genMetPt_, genMetPhi_;
   bool passMETFilter_;
   std::vector<std::string> triggerResults_;
   UInt_t  nPV_;
@@ -135,13 +141,17 @@ class HLTJetMETNtupleProducer : public edm::EDAnalyzer {
   UInt_t passedHLTCaloMET_;
   UInt_t passedL1MET_;
 
+  //gen Jets
+  std::vector<float> genjetPt_;
+  std::vector<float> genjetEta_;
+  std::vector<float> genjetPhi_;
   //pat jets
   std::vector<float> pfjetPt_;
   std::vector<float> pfjetEta_;
   std::vector<float> pfjetPhi_;
-  //std::vector<float> calojetPt_;
-  //std::vector<float> calojetEta_;
-  //std::vector<float> calojetPhi_;
+  std::vector<float> calojetPt_;
+  std::vector<float> calojetEta_;
+  std::vector<float> calojetPhi_;
   //hlt jets
   std::vector<float> hltpfjetPt_;
   std::vector<float> hltpfjetEta_;

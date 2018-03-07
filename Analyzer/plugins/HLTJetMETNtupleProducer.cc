@@ -14,16 +14,21 @@ HLTJetMETNtupleProducer::HLTJetMETNtupleProducer(const edm::ParameterSet& iConfi
 {
   //now do what ever initialization is needed
   runJets_ = iConfig.getParameter<bool>("runJets");
+  isData_ = iConfig.getParameter<bool>("isData");
   PVToken_ = consumes<reco::VertexCollection>(iConfig.getParameter<edm::InputTag>("PVCollectionTag"));
   MetCollectionToken_ = consumes<pat::METCollection>(iConfig.getParameter<edm::InputTag>("MetCollectionTag"));
+  if(!isData_)GenMetCollectionToken_ = consumes<reco::GenMETCollection>(iConfig.getParameter<edm::InputTag>("GenMetCollectionTag"));
   applyMETFilters_      = iConfig.getParameter<bool>("applyMETFilters");
   badMuonFilterToken_   = consumes<bool>(iConfig.getParameter<edm::InputTag>("BadMuonFilter"));
   badChargedCandidateFilterToken_ = consumes<bool>(iConfig.getParameter<edm::InputTag>("BadChargedCandidateFilter"));
   MuonCollectionToken_ = consumes<pat::MuonCollection>(iConfig.getParameter<edm::InputTag>("MuonCollectionTag"));
   ElectronCollectionToken_ = consumes<edm::View<pat::Electron> >(iConfig.getParameter<edm::InputTag>("ElectronCollectionTag"));
-  if(runJets_){
+  if(runJets_ || (!isData_)){
     PFJetCollectionToken_ = consumes<pat::JetCollection>(iConfig.getParameter<edm::InputTag>("PFJetCollectionTag"));
-    //CaloJetCollectionToken_= consumes<edm::View<pat::Jet> >(iConfig.getParameter<edm::InputTag>("CaloJetCollectionTag"));
+    CaloJetCollectionToken_= consumes<reco::CaloJetCollection>(iConfig.getParameter<edm::InputTag>("CaloJetCollectionTag"));
+    GenJetCollectionToken_= consumes<reco::GenJetCollection>(iConfig.getParameter<edm::InputTag>("GenJetCollectionTag"));
+  }
+  if(runJets_){
     HLTPFJetCollectionToken_ = consumes<reco::PFJetCollection>(iConfig.getParameter<edm::InputTag>("HLTPFJetCollectionTag"));
     HLTCaloJetCollectionToken_ = consumes<reco::CaloJetCollection>(iConfig.getParameter<edm::InputTag>("HLTCaloJetCollectionTag"));
   }
@@ -131,14 +136,14 @@ HLTJetMETNtupleProducer::analyze(const edm::Event& iEvent, const edm::EventSetup
     obj.unpackPathNames(TrigNames_);
     obj.unpackFilterLabels(iEvent, *hltresults);
     for (unsigned h = 0; h < obj.filterLabels().size(); ++h) {
-      //if (obj.hasFilterLabel("hltL1sETM50IorETM60IorETM70IorETM80IorETM90IorETM100") || obj.hasFilterLabel("hltL1sETM50ToETM120")) passedL1MET_ = 1;
-      if (obj.hasFilterLabel("hltL1sAllETMHadSeeds") || obj.hasFilterLabel("hltL1sETM50ToETM120")) passedL1MET_ = 1;
+      if (obj.hasFilterLabel("hltL1sETM50IorETM60IorETM70IorETM80IorETM90IorETM100") || obj.hasFilterLabel("hltL1sETM50ToETM120")) passedL1MET_ = 1;
+      //if (obj.hasFilterLabel("hltL1sAllETMHadSeeds") || obj.hasFilterLabel("hltL1sETM50ToETM120")) passedL1MET_ = 1;
       if (obj.hasFilterLabel("hltMET90")) passedHLTCaloMET_ = 1;
       if (obj.hasFilterLabel("hltMETClean80")) passedHLTCaloMETClean_ = 1;
     }             
   }
 
-  if(runJets_){
+  if(runJets_ || (!isData_)){
     //Get offline Reco/PAT Jets
     edm::Handle<pat::JetCollection> offlinepfjets;
     iEvent.getByToken(PFJetCollectionToken_,offlinepfjets);
@@ -150,17 +155,32 @@ HLTJetMETNtupleProducer::analyze(const edm::Event& iEvent, const edm::EventSetup
 	pfjetPhi_.push_back(ipf->phi()); 
       }
     }
-    /*edm::Handle<pat::JetCollection> offlinecalojets;
-      iEvent.getByToken(CaloJetCollectionToken_,offlinecalojets);
-      for(pat::JetCollection::const_iterator icalo = offlinecalojets->begin();icalo != offlinecalojets->end(); ++icalo) {
+    edm::Handle<reco::CaloJetCollection> offlinecalojets;
+    iEvent.getByToken(CaloJetCollectionToken_,offlinecalojets);
+    calojetPt_.clear(); calojetEta_.clear(); calojetPhi_.clear();
+    for(reco::CaloJetCollection::const_iterator icalo = offlinecalojets->begin();icalo != offlinecalojets->end(); ++icalo) {
       if (icalo->pt() > 20){
-      calojetPt_ ->push_back(icalo->pt());
-      calojetEta_->push_back(icalo->eta());
-      calojetPhi_->push_back(icalo->phi());
+	calojetPt_ .push_back(icalo->pt());
+	calojetEta_.push_back(icalo->eta());
+	calojetPhi_.push_back(icalo->phi());
       }
-      }*/
+    }
   }
-
+  //Get GenJets
+  if(!isData_){
+    edm::Handle<reco::GenJetCollection> genjets;
+    iEvent.getByToken(GenJetCollectionToken_,genjets);
+    genjetPt_.clear(); genjetEta_.clear(); genjetPhi_.clear();
+    for(reco::GenJetCollection::const_iterator igen = genjets->begin();igen != genjets->end(); ++igen) {
+      if (igen->pt() > 20){
+        genjetPt_ .push_back(igen->pt());
+        genjetEta_.push_back(igen->eta());
+        genjetPhi_.push_back(igen->phi());
+      }
+    }
+  }
+  
+  //MET filters
   edm::Handle<bool> badMuonFilter;
   edm::Handle<bool> badChargedCandidateFilter;
   
@@ -256,6 +276,7 @@ HLTJetMETNtupleProducer::analyze(const edm::Event& iEvent, const edm::EventSetup
   metPt_ = 0.; metPhi_ = -999.;
   metPx_ = 0.; metPy_ = 0.;
   caloMetPt_ = 0.; caloMetPhi_ = -999.;
+  genMetPt_ = 0.; genMetPhi_ = -999.;
   if(METs.isValid() && METs->size() > 0){
     metPt_ = (*METs)[0].pt();
     metPhi_ = (*METs)[0].phi();
@@ -263,8 +284,20 @@ HLTJetMETNtupleProducer::analyze(const edm::Event& iEvent, const edm::EventSetup
     metPy_ = (*METs)[0].py();
     caloMetPt_ = (*METs)[0].caloMETPt();
     caloMetPhi_ = (*METs)[0].caloMETPhi();
+    if(!isData_){
+      genMetPt_ = (*METs)[0].genMET()->pt();
+      genMetPhi_ = (*METs)[0].genMET()->phi();
+    }
   }
-  
+  /*if(!isData_){
+    edm::Handle<reco::GenMETCollection> genMETs;
+    iEvent.getByToken(GenMetCollectionToken_, genMETs);
+    if(genMETs.isValid() && genMETs->size() > 0){
+      genMetPt_ = (*genMETs)[0].pt();
+      genMetPhi_ = (*genMETs)[0].phi();
+    }
+  }
+  */
   muonPx_.clear(); muonPy_.clear(); muonPz_.clear(); 
   muonPt_.clear(); muonEta_.clear(); muonPhi_.clear(); muonCharge_.clear();
   muonR04SumChargedHadronPt_.clear(); muonR04SumChargedParticlePt_.clear();
@@ -450,14 +483,15 @@ HLTJetMETNtupleProducer::beginJob()
   tree_->Branch("PVy", &PVy_, "PVy/F");
   tree_->Branch("PVz", &PVz_, "PVz/F");
 
-  if(runJets_){
+  if(runJets_ || (!isData_)){
     tree_->Branch("pfjetPt", "std::vector<float>", &pfjetPt_);
     tree_->Branch("pfjetEta", "std::vector<float>", &pfjetEta_);
     tree_->Branch("pfjetPhi", "std::vector<float>", &pfjetPhi_);
-    //tree_->Branch("calojetPt", "std::vector<float>", &calojetPt_);
-    //tree_->Branch("calojetEta", "std::vector<float>", &calojetEta_);
-    //tree_->Branch("calojetPhi", "std::vector<float>", &calojetPhi_);
-    
+    tree_->Branch("calojetPt", "std::vector<float>", &calojetPt_);
+    tree_->Branch("calojetEta", "std::vector<float>", &calojetEta_);
+    tree_->Branch("calojetPhi", "std::vector<float>", &calojetPhi_);
+  }
+  if(runJets_){
     tree_->Branch("hltpfjetPt", "std::vector<float>", &hltpfjetPt_);
     tree_->Branch("hltpfjetEta", "std::vector<float>", &hltpfjetEta_);
     tree_->Branch("hltpfjetPhi", "std::vector<float>", &hltpfjetPhi_);
@@ -465,7 +499,14 @@ HLTJetMETNtupleProducer::beginJob()
     tree_->Branch("hltcalojetEta", "std::vector<float>", &hltcalojetEta_);
     tree_->Branch("hltcalojetPhi", "std::vector<float>", &hltcalojetPhi_);
   }
-  
+  if(!isData_){
+    tree_->Branch("genjetPt", "std::vector<float>", &genjetPt_);
+    tree_->Branch("genjetEta", "std::vector<float>", &genjetEta_);
+    tree_->Branch("genjetPhi", "std::vector<float>", &genjetPhi_);
+    tree_->Branch("genMetPt", &genMetPt_, "genMetPt/F");
+    tree_->Branch("genMetPhi", &genMetPhi_, "genMetPhi/F");
+  }
+
   tree_->Branch("metPx", &metPx_, "metPx/F");
   tree_->Branch("metPy", &metPy_, "metPy/F");
   tree_->Branch("metPt", &metPt_, "metPt/F");
