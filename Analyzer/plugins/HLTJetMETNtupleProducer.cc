@@ -32,26 +32,26 @@ HLTJetMETNtupleProducer::HLTJetMETNtupleProducer(const edm::ParameterSet& iConfi
     HLTPFJetCollectionToken_ = consumes<reco::PFJetCollection>(iConfig.getParameter<edm::InputTag>("HLTPFJetCollectionTag"));
     HLTCaloJetCollectionToken_ = consumes<reco::CaloJetCollection>(iConfig.getParameter<edm::InputTag>("HLTCaloJetCollectionTag"));
   }
-  //eleVetoIdMapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleVetoIdMap"));
-  //eleLooseIdMapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleLooseIdMap"));
-  //eleMediumIdMapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMediumIdMap"));
-  //eleTightIdMapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleTightIdMap"));
-  //eleMvaNonTrigWP80MapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMvaNonTrigIdWP80Map"));
-  //eleMvaNonTrigWP90MapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMvaNonTrigIdWP90Map"));
-  //eleMvaTrigWP80MapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMvaTrigIdWP80Map"));
-  //eleMvaTrigWP90MapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMvaTrigIdWP90Map"));
-  //mvaNonTrigValuesMapToken_ = consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("mvaNonTrigValuesMap"));
-  //mvaNonTrigCategoriesMapToken_ = consumes<edm::ValueMap<int> >(iConfig.getParameter<edm::InputTag>("mvaNonTrigCategoriesMap"));
-  //mvaTrigValuesMapToken_ = consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("mvaTrigValuesMap"));
-  //mvaTrigCategoriesMapToken_ = consumes<edm::ValueMap<int> >(iConfig.getParameter<edm::InputTag>("mvaTrigCategoriesMap"));
-  eleMvaSpring16WPMediumMapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMvaSpring16WPMediumMap"));
-  eleMvaSpring16WPTightMapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMvaSpring16WPTightMap"));
-  mvaSpring16ValuesMapToken_ = consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("mvaSpring16ValuesMap"));
-  mvaSpring16CategoriesMapToken_ = consumes<edm::ValueMap<int> >(iConfig.getParameter<edm::InputTag>("mvaSpring16CategoriesMap"));
-  eleSummer16VetoIdMapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleSummer16VetoIdMap"));
-  eleSummer16LooseIdMapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleSummer16LooseIdMap"));
-  eleSummer16MediumIdMapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleSummer16MediumIdMap"));
-  eleSummer16TightIdMapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleSummer16TightIdMap"));
+  // //eleVetoIdMapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleVetoIdMap"));
+  // //eleLooseIdMapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleLooseIdMap"));
+  // //eleMediumIdMapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMediumIdMap"));
+  // //eleTightIdMapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleTightIdMap"));
+  // //eleMvaNonTrigWP80MapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMvaNonTrigIdWP80Map"));
+  // //eleMvaNonTrigWP90MapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMvaNonTrigIdWP90Map"));
+  // //eleMvaTrigWP80MapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMvaTrigIdWP80Map"));
+  // //eleMvaTrigWP90MapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMvaTrigIdWP90Map"));
+  // //mvaNonTrigValuesMapToken_ = consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("mvaNonTrigValuesMap"));
+  // //mvaNonTrigCategoriesMapToken_ = consumes<edm::ValueMap<int> >(iConfig.getParameter<edm::InputTag>("mvaNonTrigCategoriesMap"));
+  // //mvaTrigValuesMapToken_ = consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("mvaTrigValuesMap"));
+  // //mvaTrigCategoriesMapToken_ = consumes<edm::ValueMap<int> >(iConfig.getParameter<edm::InputTag>("mvaTrigCategoriesMap"));
+  // eleMvaSpring16WPMediumMapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMvaSpring16WPMediumMap"));
+  // eleMvaSpring16WPTightMapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleMvaSpring16WPTightMap"));
+  // mvaSpring16ValuesMapToken_ = consumes<edm::ValueMap<float> >(iConfig.getParameter<edm::InputTag>("mvaSpring16ValuesMap"));
+  // mvaSpring16CategoriesMapToken_ = consumes<edm::ValueMap<int> >(iConfig.getParameter<edm::InputTag>("mvaSpring16CategoriesMap"));
+  // eleSummer16VetoIdMapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleSummer16VetoIdMap"));
+  // eleSummer16LooseIdMapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleSummer16LooseIdMap"));
+  // eleSummer16MediumIdMapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleSummer16MediumIdMap"));
+  // eleSummer16TightIdMapToken_ = consumes<edm::ValueMap<bool> >(iConfig.getParameter<edm::InputTag>("eleSummer16TightIdMap"));
   hlt_ = consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("hltprocess"));
   triggerPaths_ = iConfig.getUntrackedParameter<std::vector<std::string> >("triggerPaths");
   //triggerBits_          = consumes<edm::TriggerResults>(edm::InputTag(std::string("TriggerResults"),std::string(""),std::string("HLT")));
@@ -353,15 +353,15 @@ HLTJetMETNtupleProducer::analyze(const edm::Event& iEvent, const edm::EventSetup
   //iEvent.getByToken(eleMediumIdMapToken_,medium_id_decisions);
   //iEvent.getByToken(eleTightIdMapToken_,tight_id_decisions);
 
-  // cut based                                                                                                                                                                           
-  edm::Handle<edm::ValueMap<bool> > summer16_veto_id_decisions;
-  edm::Handle<edm::ValueMap<bool> > summer16_loose_id_decisions;
-  edm::Handle<edm::ValueMap<bool> > summer16_medium_id_decisions;
-  edm::Handle<edm::ValueMap<bool> > summer16_tight_id_decisions;
-  iEvent.getByToken(eleSummer16VetoIdMapToken_,summer16_veto_id_decisions);
-  iEvent.getByToken(eleSummer16LooseIdMapToken_,summer16_loose_id_decisions);
-  iEvent.getByToken(eleSummer16MediumIdMapToken_,summer16_medium_id_decisions);
-  iEvent.getByToken(eleSummer16TightIdMapToken_,summer16_tight_id_decisions);
+  // // cut based                                                                                          
+  // edm::Handle<edm::ValueMap<bool> > summer16_veto_id_decisions;
+  // edm::Handle<edm::ValueMap<bool> > summer16_loose_id_decisions;
+  // edm::Handle<edm::ValueMap<bool> > summer16_medium_id_decisions;
+  // edm::Handle<edm::ValueMap<bool> > summer16_tight_id_decisions;
+  // iEvent.getByToken(eleSummer16VetoIdMapToken_,summer16_veto_id_decisions);
+  // iEvent.getByToken(eleSummer16LooseIdMapToken_,summer16_loose_id_decisions);
+  // iEvent.getByToken(eleSummer16MediumIdMapToken_,summer16_medium_id_decisions);
+  // iEvent.getByToken(eleSummer16TightIdMapToken_,summer16_tight_id_decisions);
 
   // mva
   /*edm::Handle<edm::ValueMap<bool> > nontrig_wp80_decisions;
@@ -433,26 +433,26 @@ HLTJetMETNtupleProducer::analyze(const edm::Event& iEvent, const edm::EventSetup
 	elec_pass_conversion_.push_back((*Electrons)[i].passConversionVeto());
 	elecDxy_.push_back(gsfTr_e->dxy(pv_position));
 	elecDz_.push_back(gsfTr_e->dz(pv_position));
-	//elec_mva_value_nontrig_Spring15_v1_.push_back((*mvaNonTrigValues)[el]);
-	//elec_mva_category_nontrig_Spring15_v1_.push_back((*mvaNonTrigCategories)[el]);
-	//elec_mva_value_trig_Spring15_v1_.push_back((*mvaTrigValues)[el]);
-	//elec_mva_category_trig_Spring15_v1_.push_back((*mvaTrigCategories)[el]);
-	//elec_cutId_veto_Spring15_.push_back((*veto_id_decisions)[el]);
-	//elec_cutId_loose_Spring15_.push_back((*loose_id_decisions)[el]);
-	//elec_cutId_medium_Spring15_.push_back((*medium_id_decisions)[el]);
-	//elec_cutId_tight_Spring15_.push_back((*tight_id_decisions)[el]);
-	//elec_mva_wp80_nontrig_Spring15_v1_.push_back((*nontrig_wp80_decisions)[el]);
-	//elec_mva_wp90_nontrig_Spring15_v1_.push_back((*nontrig_wp90_decisions)[el]);
-	//elec_mva_wp80_trig_Spring15_v1_.push_back((*trig_wp80_decisions)[el]);
-	//elec_mva_wp90_trig_Spring15_v1_.push_back((*trig_wp90_decisions)[el]);
-	elec_mva_medium_Spring16_v1_.push_back((*spring16_medium_decisions)[el]);
-        elec_mva_tight_Spring16_v1_.push_back((*spring16_tight_decisions)[el]);
-	elec_mva_value_Spring16_v1_.push_back((*mvaSpring16Values)[el]);
-        elec_mva_category_Spring16_v1_.push_back((*mvaSpring16Categories)[el]);
-	elec_cutId_veto_Summer16_.push_back((*summer16_veto_id_decisions)[el]);
-        elec_cutId_loose_Summer16_.push_back((*summer16_loose_id_decisions)[el]);
-        elec_cutId_medium_Summer16_.push_back((*summer16_medium_id_decisions)[el]);
-        elec_cutId_tight_Summer16_.push_back((*summer16_tight_id_decisions)[el]);
+	// //elec_mva_value_nontrig_Spring15_v1_.push_back((*mvaNonTrigValues)[el]);
+	// //elec_mva_category_nontrig_Spring15_v1_.push_back((*mvaNonTrigCategories)[el]);
+	// //elec_mva_value_trig_Spring15_v1_.push_back((*mvaTrigValues)[el]);
+	// //elec_mva_category_trig_Spring15_v1_.push_back((*mvaTrigCategories)[el]);
+	// //elec_cutId_veto_Spring15_.push_back((*veto_id_decisions)[el]);
+	// //elec_cutId_loose_Spring15_.push_back((*loose_id_decisions)[el]);
+	// //elec_cutId_medium_Spring15_.push_back((*medium_id_decisions)[el]);
+	// //elec_cutId_tight_Spring15_.push_back((*tight_id_decisions)[el]);
+	// //elec_mva_wp80_nontrig_Spring15_v1_.push_back((*nontrig_wp80_decisions)[el]);
+	// //elec_mva_wp90_nontrig_Spring15_v1_.push_back((*nontrig_wp90_decisions)[el]);
+	// //elec_mva_wp80_trig_Spring15_v1_.push_back((*trig_wp80_decisions)[el]);
+	// //elec_mva_wp90_trig_Spring15_v1_.push_back((*trig_wp90_decisions)[el]);
+	// elec_mva_medium_Spring16_v1_.push_back((*spring16_medium_decisions)[el]);
+        // elec_mva_tight_Spring16_v1_.push_back((*spring16_tight_decisions)[el]);
+	// elec_mva_value_Spring16_v1_.push_back((*mvaSpring16Values)[el]);
+        // elec_mva_category_Spring16_v1_.push_back((*mvaSpring16Categories)[el]);
+	// elec_cutId_veto_Summer16_.push_back((*summer16_veto_id_decisions)[el]);
+        // elec_cutId_loose_Summer16_.push_back((*summer16_loose_id_decisions)[el]);
+        // elec_cutId_medium_Summer16_.push_back((*summer16_medium_id_decisions)[el]);
+        // elec_cutId_tight_Summer16_.push_back((*summer16_tight_id_decisions)[el]);
       }
     }
   /*

@@ -1,4 +1,4 @@
-<library   file="*.cc" name="HLTriggerConfigurationPlugins">
+<library   file="*.cc" name="JetMetTriggerAnalyzerPlugins">
 <use   name="root"/> 
 <use   name="rootrflx"/>
 <use   name="rootcore"/>
@@ -8,15 +8,23 @@
 <use   name="DataFormats/PatCandidates"/>
 <use   name="DataFormats/Common"/>
 <use   name="DataFormats/HLTReco"/>
+<use   name="DataFormats/CSCDigi"/>
+<use   name="DataFormats/CTPPSDigi"/>
+<use   name="DataFormats/MuonReco"/>
 <use   name="PhysicsTools/UtilAlgos"/>
+<use   name="FWCore/Common"/> 
 <use   name="FWCore/Framework"/>
 <use   name="FWCore/PluginManager"/>
 <use   name="FWCore/ServiceRegistry"/>
+<use   name="FWCore/Utilities"/>
+<use   name="FWCore/MessageLogger"/>
+<use   name="FWCore/ParameterSet"/>
 <use   name="clhep"/>
 <use   name="HLTrigger/HLTcore"/>
 <use   name="L1Trigger/GlobalTriggerAnalyzer"/>
 <use   name="CondFormats/L1TObjects"/>
 <use   name="CondFormats/DataRecord"/>
 <use   name="fastjet"/>
+<use   name="CommonTools/UtilAlgos"/>
 <flags   EDM_PLUGIN="1"/>
 </library>
